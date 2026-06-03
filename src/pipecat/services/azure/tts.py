@@ -353,6 +353,10 @@ class AzureTTSService(TTSService, AzureBaseTTSService):
 
         if not region and not private_endpoint:
             raise ValueError("Either 'region' or 'private_endpoint' must be provided.")
+        if region and private_endpoint:
+            logger.warning(
+                "Both 'region' and 'private_endpoint' provided; 'region' will be ignored."
+            )
 
         self._speech_config = None
         self._speech_synthesizer = None
@@ -390,10 +394,6 @@ class AzureTTSService(TTSService, AzureBaseTTSService):
 
         # Now self.sample_rate is properly initialized
         if self._private_endpoint:
-            if self._region:
-                logger.warning(
-                    "Both 'region' and 'private_endpoint' provided; 'region' will be ignored."
-                )
             self._speech_config = SpeechConfig(
                 subscription=self._api_key,
                 endpoint=self._private_endpoint,
@@ -872,6 +872,10 @@ class AzureHttpTTSService(TTSService, AzureBaseTTSService):
 
         if not region and not private_endpoint:
             raise ValueError("Either 'region' or 'private_endpoint' must be provided.")
+        if region and private_endpoint:
+            logger.warning(
+                "Both 'region' and 'private_endpoint' provided; 'region' will be ignored."
+            )
 
         self._speech_config = None
         self._speech_synthesizer = None
@@ -896,10 +900,6 @@ class AzureHttpTTSService(TTSService, AzureBaseTTSService):
             return
 
         if self._private_endpoint:
-            if self._region:
-                logger.warning(
-                    "Both 'region' and 'private_endpoint' provided; 'region' will be ignored."
-                )
             self._speech_config = SpeechConfig(
                 subscription=self._api_key,
                 endpoint=self._private_endpoint,
